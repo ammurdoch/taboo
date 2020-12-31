@@ -7,6 +7,9 @@ import { AuthContextProvider } from './shared/auth-context';
 import AppLoading from './components/AppLoading';
 import Deployments from './pages/Deployments';
 import ViewDeployment from './pages/ViewDeployment';
+import SignUp from './pages/SignUp';
+import { ApolloProvider } from '@apollo/client';
+import client from './apollo-client';
 
 const App = () => (
   <AuthContextProvider>
@@ -15,21 +18,24 @@ const App = () => (
         {context.state.isLoading ? (
           <AppLoading />
         ) : (
-          <Router>
-            {context.state.user ? (
-              <Switch>
-                <Route exact path="/" component={Deployments} />
-                <Route
-                  path="/deployment/:serialNo"
-                  component={ViewDeployment}
-                />
-              </Switch>
-            ) : (
-              <Switch>
-                <Route exact path="/" component={SignIn} />
-              </Switch>
-            )}
-          </Router>
+          <ApolloProvider client={client}>
+            <Router>
+              {context.state.user ? (
+                <Switch>
+                  <Route exact path="/" component={Deployments} />
+                  <Route
+                    path="/deployment/:serialNo"
+                    component={ViewDeployment}
+                  />
+                </Switch>
+              ) : (
+                <Switch>
+                  <Route exact path="/" component={SignIn} />
+                  <Route exact path="/sign-up" component={SignUp} />
+                </Switch>
+              )}
+            </Router>
+          </ApolloProvider>
         )}
       </>
     )}

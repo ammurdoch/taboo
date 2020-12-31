@@ -22,19 +22,27 @@ export const AuthContextProvider = (props) => {
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
-      const db = firebase.firestore();
-      const doc = await db.collection('users').doc(user.uid).get();
-      const profile = doc.data();
-      console.log('authStateChange', user, profile);
-      setState({
-        isLoading: false,
-        isSignout: false,
-        user: {
-          uid: user.uid,
-          email: user.email,
-          ...profile,
-        },
-      });
+      if (user) {
+        const db = firebase.firestore();
+        const doc = await db.collection('users').doc(user.uid).get();
+        const profile = doc.data();
+        console.log('authStateChange', user, profile);
+        setState({
+          isLoading: false,
+          isSignout: false,
+          user: {
+            uid: user.uid,
+            email: user.email,
+            ...profile,
+          },
+        });
+      } else {
+        setState({
+          isLoading: false,
+          isSignout: false,
+          user: null,
+        });
+      }
     });
   }, []);
 
