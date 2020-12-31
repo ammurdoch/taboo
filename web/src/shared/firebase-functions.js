@@ -4,13 +4,13 @@ import 'firebase/firestore';
 import 'firebase/functions';
 
 export const firebaseApp = firebase.initializeApp({
-  apiKey: 'AIzaSyD_w9c7g98WbGsJ0jB1nZVaFCoJLxzOdMQ',
-  authDomain: 'theora-clear-deployments.firebaseapp.com',
-  databaseURL: 'https://theora-clear-deployments.firebaseio.com',
-  projectId: 'theora-clear-deployments',
-  storageBucket: 'theora-clear-deployments.appspot.com',
-  messagingSenderId: '879012174755',
-  appId: '1:879012174755:web:b3366d7d27ca17969f5816',
+  apiKey: "AIzaSyDx69_J-1pT0yLaG_UmykU8yZ1WSqvYmpc",
+  authDomain: "check-supply.firebaseapp.com",
+  projectId: "check-supply",
+  storageBucket: "check-supply.appspot.com",
+  messagingSenderId: "740012492538",
+  appId: "1:740012492538:web:8fe8277ea17f7a8a70ab43",
+  measurementId: "G-1VYKLBYGFK"
 });
 
 export const generateKeypair = firebase
