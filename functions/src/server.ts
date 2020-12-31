@@ -1,6 +1,7 @@
 import signUpResolver from './sign-up';
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
+const expressPlayground = require('graphql-playground-middleware-express').default
 
 const cors = require("cors");
 function configureServer() {
@@ -38,10 +39,14 @@ function configureServer() {
 
   const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    introspection: true,
   });
 
   server.applyMiddleware({ app });
+
+  app.get('/playground', expressPlayground({ endpoint: '/api/graphql' }))
+
   return app;
 }
 
