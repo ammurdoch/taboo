@@ -36,6 +36,12 @@ export const AuthContextProvider = (props) => {
             ...profile,
           },
         });
+      } else {
+        setState({
+          isLoading: false,
+          isSignout: false,
+          user: null,
+        });
       }
     });
   }, []);
