@@ -10,7 +10,8 @@ import {
   Tooltip,
   Spin,
 } from 'antd';
-import { useHistory } from 'react-router-dom';
+import { useMutation, gql } from '@apollo/client';
+import { generateUuid } from '../shared/utils';
 
 const { Title, Text } = Typography;
 
@@ -22,24 +23,36 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const SignIn = () => {
+const signUpMutation = gql`
+  mutation SignUp($uuid: ID!, $email: String!, $password: String!) {
+    signUp(uuid: $uuid, email: $email, password: $password) {
+      name
+      email
+    }
+  }
+`;
+
+const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
-  const history = useHistory();
+  const [signUp] = useMutation(signUpMutation);
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     setLoading(true);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(values.email, values.password)
-      .catch(function (error) {
-        console.log('error', error);
-        setServerError(error.message);
-        setLoading(false);
+    setServerError(null);
+    try {
+      const result = await signUp({
+        variables: {
+          uuid: generateUuid(),
+          ...values,
+        },
       });
+      console.log('result', result);
+    } catch (err) {
+      setServerError(err.message);
+    }
+    setLoading(false);
   };
-
-  console.log('serverError', serverError);
 
   return (
     <div className="page qr-gen">
@@ -52,7 +65,7 @@ const SignIn = () => {
           onFinish={onFinish}
           className="signin-form"
         >
-          <Title level={3}>Sign In</Title>
+          <Title level={3}>Sign Up</Title>
           <Form.Item
             label="Email"
             name="email"
@@ -74,15 +87,8 @@ const SignIn = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button
-              type="link"
-              htmlType="button"
-              onClick={() => history.push('/sign-up')}
-            >
-              Sign Up
-            </Button>
             <Button type="primary" htmlType="submit">
-              Sign In
+              Sign Up
             </Button>
           </Form.Item>
           {serverError && (
@@ -138,4 +144,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

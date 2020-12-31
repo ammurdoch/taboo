@@ -8,6 +8,22 @@ const signUpResolver = async (_: any, data: any, { dataSources }: any) => {
   // getting dest email by query string
   const { uuid, email, password } = data;
 
+  const db = admin.firestore();
+  let userDoc;
+  try {
+    userDoc = await db
+      .collection('users')
+      .doc(uuid)
+      .get();
+  } catch (err) {
+    functions.logger.error(err);
+    throw new functions.https.HttpsError('internal', 'There was an error creating user account');
+  }
+  if (userDoc.exists) {
+    functions.logger.info(`User with id: ${uuid} already exists`);
+    throw new functions.https.HttpsError('invalid-argument', 'Failed to create user');
+  }
+
   const auth = admin.auth();
   let userRecord;
   try {
@@ -24,20 +40,20 @@ const signUpResolver = async (_: any, data: any, { dataSources }: any) => {
     throw new functions.https.HttpsError('internal', 'There was an error creating user account');
   }
 
-  const db = admin.firestore();
   try {
     await db
       .collection('users')
       .doc(uuid)
-      .update({
+      .set({
         name: '',
       });
     return {
-      success: true,
+      name: '',
+      email,
     }
   } catch (err) {
     functions.logger.error(err);
-    throw new functions.https.HttpsError('internal', 'There was an error generating the keypair');
+    throw new functions.https.HttpsError('internal', 'There was an error creating user account');
   }
 };
 

@@ -3,7 +3,7 @@ import { Spin } from 'antd';
 
 const AppLoading = () => {
   return (
-    <Spin loading tip="Loading ..." size="large">
+    <Spin spinning tip="Loading ..." size="large">
       <div className="app-loading" />
       <style jsx>{`
         .app-loading {
