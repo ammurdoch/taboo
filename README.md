@@ -39,6 +39,7 @@
 1. Build and deploy functions
 ```
 cd functions
+yarn install
 yarn build
 firebase deploy --only functions
 ```
@@ -46,14 +47,20 @@ firebase deploy --only functions
 2. Build and deploy frontend
 ```
 cd web
+yarn install
 yarn build
 firebase deploy --only hosting
 ```
+
+3. Access GraphQL playground
+
+Navigate to https://us-central1-check-supply.cloudfunctions.net/api/playground
 
 # Running locally
 1. Backend:
 ```
 cd functions
+yarn install
 yarn build
 firebase emulators:start --only functions
 ```
@@ -61,8 +68,14 @@ firebase emulators:start --only functions
 2. Frontend
 ```
 cd web
+yarn install
 yarn start
 ```
+
+3. Access GraphQL playground
+
+Navigate to http://localhost:5001/check-supply/us-central1/api/playground
+
 # Troubleshooting
 
 If you run the emulators and get a "This port is already used" error:
