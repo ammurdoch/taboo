@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 function useDeploymentDetails(authContext, serialNo, setLoading, setErrorMsg) {
   const [deployment, setDeployment] = React.useState();

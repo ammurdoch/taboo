@@ -10,6 +10,7 @@ import ViewDeployment from './pages/ViewDeployment';
 import SignUp from './pages/SignUp';
 import { ApolloProvider } from '@apollo/client';
 import client from './apollo-client';
+import Dashboard from './pages/Dashboard';
 
 const App = () => (
   <AuthContextProvider>
@@ -22,7 +23,7 @@ const App = () => (
             <Router>
               {context.state.user ? (
                 <Switch>
-                  <Route exact path="/" component={Deployments} />
+                  <Route exact path="/" component={Dashboard} />
                   <Route
                     path="/deployment/:serialNo"
                     component={ViewDeployment}

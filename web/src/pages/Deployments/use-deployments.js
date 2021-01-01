@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import settings from '../../settings';
 
 const initialState = {

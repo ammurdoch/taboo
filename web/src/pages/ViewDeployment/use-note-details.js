@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 function useNoteDetails(authContext, uuid, setLoading, setErrorMsg) {
   const [note, setNote] = React.useState();

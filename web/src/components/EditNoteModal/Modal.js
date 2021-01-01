@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
 import EditContent from './Content';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import { AuthContext } from '../../shared/auth-context';
 
 const { Title, Text } = Typography;

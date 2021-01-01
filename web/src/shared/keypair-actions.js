@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import { notification } from 'antd';
 import { generateKeypair } from './firebase-functions';
 

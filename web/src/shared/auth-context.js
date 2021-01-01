@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import * as React from 'react';
 import { isEmptyChildren, isFunction } from './react-utils';
 
@@ -26,7 +26,6 @@ export const AuthContextProvider = (props) => {
         const db = firebase.firestore();
         const doc = await db.collection('users').doc(user.uid).get();
         const profile = doc.data();
-        console.log('authStateChange', user, profile);
         setState({
           isLoading: false,
           isSignout: false,

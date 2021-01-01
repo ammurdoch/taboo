@@ -1,5 +1,6 @@
 import signUpResolver from './resolvers/auth/sign-up';
 import typeDefs from './schema';
+import authContext from './resolvers/auth/auth-context';
 
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
@@ -8,7 +9,10 @@ const cors = require("cors");
 
 const resolvers = {
   Query: {
-    hello: () => "world"
+    hello: (_: any, data: any, context: any) => {
+      // Context variable looks like { user: ... }
+      return "world";
+    }
   },
   Mutation: {
     signUp: signUpResolver,
@@ -23,6 +27,7 @@ function configureServer() {
     typeDefs,
     resolvers,
     introspection: true,  // TODO: Inject false when in productiion
+    context: authContext,
   });
 
   server.applyMiddleware({ app });
