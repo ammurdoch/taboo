@@ -37,7 +37,7 @@ const signUpResolver = async (_: any, data: any, { dataSources }: any) => {
     functions.logger.log('Successfully created new user:', userRecord.uid);
   } catch (err) {
     functions.logger.error(err);
-    throw new functions.https.HttpsError('internal', 'There was an error creating user account');
+    throw new functions.https.HttpsError('internal', `Error: ${err.message}`);
   }
 
   try {
