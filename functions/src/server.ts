@@ -1,6 +1,5 @@
 import signUpResolver from './resolvers/auth/sign-up';
 import typeDefs from './schema';
-import * as functions from 'firebase-functions';
 import authContext from './resolvers/auth/auth-context';
 
 const express = require("express");
@@ -11,7 +10,7 @@ const cors = require("cors");
 const resolvers = {
   Query: {
     hello: (_: any, data: any, context: any) => {
-      functions.logger.info('context', context);
+      // Context variable looks like { user: ... }
       return "world";
     }
   },
