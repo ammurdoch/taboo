@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, notification } from 'antd';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 const SignOut = () => {
   return (

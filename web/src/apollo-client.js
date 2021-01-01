@@ -9,6 +9,7 @@ import {
 } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import firebase from 'firebase/app';
 
 const httpLink = new HttpLink({ uri: settings.apiUrl });
 
@@ -27,12 +28,12 @@ function getConnectionParams() {
 //   },
 // });
 
-const authMiddleware = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
+const authMiddleware = new ApolloLink(async (operation, forward) => {
+  const idToken = await firebase.auth().currentUser.getIdToken(true);
+  if (idToken) {
     operation.setContext({
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
   }

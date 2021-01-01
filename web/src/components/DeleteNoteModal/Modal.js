@@ -6,7 +6,7 @@ import {
   PrinterOutlined,
 } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 const { Title, Text } = Typography;
 

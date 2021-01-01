@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import {
   Form,
   Input,
