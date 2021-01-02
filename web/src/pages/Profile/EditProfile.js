@@ -1,18 +1,47 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useQuery, gql, useApolloClient } from '@apollo/client';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useMutation, gql } from '@apollo/client';
 import apolloClient from '../../apollo-client';
 import { ProfileOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Space, Typography, Form, Card, Input, DatePicker } from 'antd';
-import Column from 'antd/lib/table/Column';
+import {
+  Button,
+  Space,
+  Typography,
+  Form,
+  Card,
+  Input,
+  DatePicker,
+  Spin,
+  message,
+} from 'antd';
 import { AuthContext } from '../../shared/auth-context';
 import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
+import moment from 'moment';
+import { useSelector, shallowEqual } from 'react-redux';
 
 const { Title, Text } = Typography;
 
-export const helloQuery = gql`
-  query Hello {
-    hello
+export const updateProfileMutation = gql`
+  mutation UpdateProfile($profile: UpdateProfileInput!) {
+    updateProfile(profile: $profile) {
+      uid
+      name
+      email
+      phone
+      birthday
+      profilePicUrl
+      createdBy
+      updatedBy
+      createdAt
+      updatedAt
+    }
   }
 `;
 
@@ -27,14 +56,43 @@ const tailLayout = {
 function EditProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [refetches, setRefetches] = useState(0);
-  const _refetches = useRef(-1);
   const history = useHistory();
   const authContext = useContext(AuthContext);
+  const [updateProfile] = useMutation(updateProfileMutation);
 
-  console.log('auth', authContext.state.user);
+  const onFinish = async (values) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { phone, ...otherValues } = values;
+      let standardPhone;
+      if (!phone.startsWith('+') && phone.length === 10) {
+        standardPhone = `+1${phone}`;
+      } else {
+        standardPhone = phone;
+      }
+      const result = await updateProfile({
+        variables: {
+          profile: {
+            uid: authContext.state.user.uid,
+            phone: standardPhone,
+            ...otherValues,
+          },
+        },
+      });
+      message.success('Profile successfully updated');
+      history.push('/profile');
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
 
-  const pages = [];
+  const locale = useSelector((store) => store.locale, shallowEqual);
+
+  const user = useMemo(() => {
+    return authContext.state.user;
+  }, [authContext.state.user]);
 
   return (
     <div className="page">
@@ -42,62 +100,76 @@ function EditProfile() {
         <Title style={{ margin: 0 }}>Profile</Title>
       </div>
       {authContext.state.user && (
-        <Card cover={<ProfilePic />}>
-          <Form {...layout} style={{ width: 600 }}>
-            <Form.Item
-              label="Name"
-              name="name"
-              initialValue={authContext.state.user.name}
-              rules={[{ required: true, message: 'Please enter your name' }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-              initialValue={authContext.state.user.email}
-              rules={[
-                { required: true, message: 'Please enter your email' },
-                {
-                  type: 'email',
-                  message: 'Please enter a valid email (ex. aaron@gmail.com).',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Phone Number"
-              name="phone"
-              initialValue={authContext.state.user.phone}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Birthday"
-              name="birthday"
-              initialValue={authContext.state.user.birthday}
-            >
-              <DatePicker />
-            </Form.Item>
-            <Form.Item
-              {...tailLayout}
-              style={{ margin: 0, textAlign: 'center' }}
-            >
-              <Space>
-                <Button
-                  htmlType="button"
-                  onClick={() => history.push('/profile')}
-                >
-                  Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
-                  Save
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Card>
+        <Spin spinning={loading}>
+          <Card cover={<ProfilePic />}>
+            <Form {...layout} style={{ width: 600 }} onFinish={onFinish}>
+              <Form.Item
+                label="Name"
+                name="name"
+                initialValue={user.name}
+                rules={[{ required: true, message: 'Please enter your name' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="email"
+                label="Email"
+                initialValue={user.email}
+                rules={[
+                  { required: true, message: 'Please enter your email' },
+                  {
+                    type: 'email',
+                    message:
+                      'Please enter a valid email (ex. aaron@gmail.com).',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Phone Number"
+                name="phone"
+                initialValue={user.phone}
+                rules={[
+                  {
+                    pattern: /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+                    message:
+                      'Please enter a valid phone number (ex. 5124026225).',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Birthday"
+                name="birthday"
+                initialValue={user.birthday && moment(user.birthday)}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  locale={locale}
+                  defaultPickerValue={moment('2000-01-01')}
+                />
+              </Form.Item>
+              <Form.Item
+                {...tailLayout}
+                style={{ margin: 0, textAlign: 'center' }}
+              >
+                <Space>
+                  <Button
+                    htmlType="button"
+                    onClick={() => history.push('/profile')}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="primary" htmlType="submit">
+                    Save
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Spin>
       )}
       {error && (
         <div className="ant-form-item-has-error" style={{ marginTop: 16 }}>

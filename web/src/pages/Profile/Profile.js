@@ -7,6 +7,7 @@ import Column from 'antd/lib/table/Column';
 import { AuthContext } from '../../shared/auth-context';
 import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
+import { useSelector, shallowEqual } from 'react-redux';
 
 const { Title, Text } = Typography;
 
@@ -33,7 +34,7 @@ function Profile() {
 
   console.log('auth', authContext.state);
 
-  const pages = [];
+  const locale = useSelector((store) => store.locale, shallowEqual);
 
   return (
     <div className="page">
@@ -52,7 +53,11 @@ function Profile() {
             <Text>{authContext.state.user.phone}</Text>
           </Form.Item>
           <Form.Item label="Birthday">
-            <Text>Birthday</Text>
+            <Text>
+              {Intl.DateTimeFormat(locale).format(
+                new Date(authContext.state.user.birthday),
+              )}
+            </Text>
           </Form.Item>
           <Form.Item {...tailLayout} style={{ margin: 0, textAlign: 'center' }}>
             <Button

@@ -40,6 +40,7 @@ export const AuthContextProvider = (props) => {
         const userWithProfile = {
           uid: user.uid,
           email: user.email,
+          phone: user.phoneNumber,
           ...profile,
         };
         dispatch(authStateChangedAction(userWithProfile));

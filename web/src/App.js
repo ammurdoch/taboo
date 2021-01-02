@@ -60,8 +60,8 @@ const App = () => {
                   </Layout>
                 ) : (
                   <Switch>
-                    <Route exact path="/" component={SignIn} />
-                    <Route exact path="/sign-up" component={SignUp} />
+                    <Route exact path="/" component={SignUp} />
+                    <Route exact path="/sign-in" component={SignIn} />
                   </Switch>
                 )}
               </Router>

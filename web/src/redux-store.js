@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux';
+import enUS from 'antd/es/locale/en_US';
 
 export const READ_PROFILE = 'READ_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
@@ -70,7 +71,7 @@ function profile(state = initialProfile, action) {
   }
 }
 
-const appReducer = combineReducers({ authState, profile });
+const appReducer = combineReducers({ authState, profile, locale: () => enUS });
 
 const rootReducer = (state, action) => {
   if (action.type === SIGN_OUT) {
