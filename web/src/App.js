@@ -18,57 +18,59 @@ import EditProfile from './pages/Profile/EditProfile';
 
 const { Text } = Typography;
 
-const App = () => (
-  <AuthContextProvider>
-    {(context) => (
-      <>
-        {context.state.isLoading ? (
-          <AppLoading />
-        ) : (
-          <ApolloProvider client={client}>
-            <Router>
-              {context.state.user ? (
-                <Layout
-                  hasSider
-                  style={{ minHeight: '100vh', background: 'white' }}
-                >
-                  <MainNavMenu />
-                  <Layout style={{ background: 'white' }}>
-                    <Switch>
-                      <Route exact path="/" component={Dashboard} />
-                      <Route exact path="/checks" component={Checks} />
-                      <Route exact path="/payments" component={Payments} />
-                      <Route exact path="/profile" component={Profile} />
-                      <Route
-                        exact
-                        path="/profile/edit"
-                        component={EditProfile}
-                      />
-                    </Switch>
-                    <Layout.Footer
-                      style={{
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <Text>Check Supply ©2020</Text>
-                      <Version />
-                    </Layout.Footer>
+const App = () => {
+  return (
+    <AuthContextProvider>
+      {(context) => (
+        <>
+          {context.state.isLoading ? (
+            <AppLoading />
+          ) : (
+            <ApolloProvider client={client}>
+              <Router>
+                {context.state.user ? (
+                  <Layout
+                    hasSider
+                    style={{ minHeight: '100vh', background: 'white' }}
+                  >
+                    <MainNavMenu />
+                    <Layout style={{ background: 'white' }}>
+                      <Switch>
+                        <Route exact path="/" component={Dashboard} />
+                        <Route exact path="/checks" component={Checks} />
+                        <Route exact path="/payments" component={Payments} />
+                        <Route exact path="/profile" component={Profile} />
+                        <Route
+                          exact
+                          path="/profile/edit"
+                          component={EditProfile}
+                        />
+                      </Switch>
+                      <Layout.Footer
+                        style={{
+                          backgroundColor: 'white',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Text>Check Supply ©2020</Text>
+                        <Version />
+                      </Layout.Footer>
+                    </Layout>
                   </Layout>
-                </Layout>
-              ) : (
-                <Switch>
-                  <Route exact path="/" component={SignIn} />
-                  <Route exact path="/sign-up" component={SignUp} />
-                </Switch>
-              )}
-            </Router>
-          </ApolloProvider>
-        )}
-      </>
-    )}
-  </AuthContextProvider>
-);
+                ) : (
+                  <Switch>
+                    <Route exact path="/" component={SignIn} />
+                    <Route exact path="/sign-up" component={SignUp} />
+                  </Switch>
+                )}
+              </Router>
+            </ApolloProvider>
+          )}
+        </>
+      )}
+    </AuthContextProvider>
+  );
+};
 
 export default App;
