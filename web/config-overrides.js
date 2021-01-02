@@ -20,10 +20,10 @@ module.exports = override(
     lessOptions: {
       modifyVars: {
         '@font-size-base': '16px',
-        '@heading-color': '#00474f',
-        '@text-color': '#006d75',
-        '@text-color-secondary': '#08979c',
-        '@primary-color': '#00474f',
+        '@heading-color': '#0d3322',
+        '@text-color': '#111212',
+        '@text-color-secondary': '#999',
+        '@primary-color': '#3bdb95',
         '@padding-lg': '32px',
         '@padding-md': '24px',
         '@padding-sm': '16px',

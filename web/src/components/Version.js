@@ -10,7 +10,6 @@ const Version = () => {
       <Text>{`Version ${packageJson.version}`}</Text>
       <style jsx>{`
         .version {
-          position: absolute;
           bottom: 16px;
           right: 16px;
         }
