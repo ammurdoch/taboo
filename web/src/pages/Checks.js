@@ -1,22 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery, gql, useApolloClient } from '@apollo/client';
 import apolloClient from '../apollo-client';
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  ProfileOutlined,
-} from '@ant-design/icons';
-import {
-  Button,
-  Space,
-  Table,
-  Typography,
-  Tooltip,
-  Progress,
-  Card,
-  Timeline,
-} from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Typography, Tooltip, Result } from 'antd';
 import Column from 'antd/lib/table/Column';
 
 const { Title, Text } = Typography;
@@ -27,7 +13,7 @@ export const helloQuery = gql`
   }
 `;
 
-function Dashboard() {
+function Checks() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refetches, setRefetches] = useState(0);
@@ -60,32 +46,9 @@ function Dashboard() {
   return (
     <div className="page">
       <div className="header">
-        <Title style={{ margin: 0 }}>Dashboard</Title>
+        <Title style={{ margin: 0 }}>Checks</Title>
       </div>
-      <div style={{ width: '100%' }}>
-        <Card
-          title="Finish Setting Up Your Account"
-          icon={<ProfileOutlined />}
-          style={{ width: '100%' }}
-        >
-          <Progress
-            strokeColor={{
-              '0%': '#108ee9',
-              '100%': '#87d068',
-            }}
-            percent={99.9}
-            style={{ marginBottom: 32 }}
-          />
-          <Timeline>
-            <Timeline.Item color="red">
-              <a onClick={() => console.log('verify')}>Verify your email</a>
-            </Timeline.Item>
-            <Timeline.Item>Complete your profile</Timeline.Item>
-            <Timeline.Item>Connect a bank account</Timeline.Item>
-            <Timeline.Item>Send your first check</Timeline.Item>
-          </Timeline>
-        </Card>
-      </div>
+      <Result icon={<SmileOutlined />} title="Coming Soon!" />
       {error && (
         <div className="ant-form-item-has-error" style={{ marginTop: 16 }}>
           <div className="ant-form-item-explain">{error}</div>
@@ -134,4 +97,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Checks;

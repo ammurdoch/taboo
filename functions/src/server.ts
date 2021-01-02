@@ -1,6 +1,7 @@
 import signUpResolver from './resolvers/auth/sign-up';
 import typeDefs from './schema';
 import authContext from './resolvers/auth/auth-context';
+import updateProfileResolver from './resolvers/auth/update-profile';
 
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
@@ -16,6 +17,7 @@ const resolvers = {
   },
   Mutation: {
     signUp: signUpResolver,
+    updateProfile: updateProfileResolver,
   }
 };
 

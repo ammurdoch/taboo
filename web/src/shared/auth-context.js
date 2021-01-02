@@ -1,6 +1,8 @@
 import firebase from 'firebase/app';
 import * as React from 'react';
 import { isEmptyChildren, isFunction } from './react-utils';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { authStateChangedAction, signOutAction } from '../redux-store';
 
 const initialAuthState = {
   isLoading: true,
@@ -18,7 +20,16 @@ export const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const { component, children } = props;
 
-  const [state, setState] = React.useState(initialAuthState);
+  const dispatch = useDispatch();
+  const authState = useSelector((store) => store.authState, shallowEqual);
+  const currentUser = useSelector((store) => store.profile, shallowEqual);
+  const state = React.useMemo(
+    () => ({
+      ...authState,
+      user: currentUser,
+    }),
+    [authState, currentUser],
+  );
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
@@ -26,24 +37,18 @@ export const AuthContextProvider = (props) => {
         const db = firebase.firestore();
         const doc = await db.collection('users').doc(user.uid).get();
         const profile = doc.data();
-        setState({
-          isLoading: false,
-          isSignout: false,
-          user: {
-            uid: user.uid,
-            email: user.email,
-            ...profile,
-          },
-        });
+        const userWithProfile = {
+          uid: user.uid,
+          email: user.email,
+          phone: user.phoneNumber,
+          ...profile,
+        };
+        dispatch(authStateChangedAction(userWithProfile));
       } else {
-        setState({
-          isLoading: false,
-          isSignout: false,
-          user: null,
-        });
+        dispatch(authStateChangedAction(null));
       }
     });
-  }, []);
+  }, [dispatch]);
 
   const authContext = React.useMemo(
     () => ({
@@ -58,26 +63,12 @@ export const AuthContextProvider = (props) => {
         return '';
       },
       signOut: async () => {
-        setState({
-          ...state,
-          isLoading: true,
-          isSignout: true,
-        });
+        dispatch(signOutAction());
         await firebase.auth().signOut();
-      },
-      signUp: async (values) => {
-        const { email, password } = values;
-        try {
-          await firebase.auth().createUserWithEmailAndPassword(email, password);
-        } catch (err) {
-          console.log(err.code, err.message);
-          return err.message;
-        }
-        return '';
       },
       state,
     }),
-    [state],
+    [state, dispatch],
   );
 
   return (

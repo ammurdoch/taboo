@@ -13,12 +13,12 @@ import firebase from 'firebase/app';
 
 const httpLink = new HttpLink({ uri: settings.apiUrl });
 
-function getConnectionParams() {
-  const token = localStorage.getItem('authToken');
-  return {
-    authToken: `Bearer ${token}`,
-  };
-}
+// function getConnectionParams() {
+//   const token = localStorage.getItem('authToken');
+//   return {
+//     authToken: `Bearer ${token}`,
+//   };
+// }
 
 // const wsLink = new WebSocketLink({
 //   uri: settings.apiWsUrl,
@@ -29,7 +29,11 @@ function getConnectionParams() {
 // });
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
-  const idToken = await firebase.auth().currentUser.getIdToken(true);
+  const currentUser = firebase.auth().currentUser;
+  let idToken;
+  if (currentUser) {
+    idToken = await currentUser.getIdToken(true);
+  }
   if (idToken) {
     operation.setContext({
       headers: {

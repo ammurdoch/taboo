@@ -32,8 +32,10 @@ const SignIn = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(values.email, values.password)
+      .then(function () {
+        history.push('/');
+      })
       .catch(function (error) {
-        console.log('error', error);
         setServerError(error.message);
         setLoading(false);
       });

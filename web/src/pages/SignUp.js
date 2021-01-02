@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { useMutation, gql } from '@apollo/client';
 import { generateUuid } from '../shared/utils';
+import { useHistory } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -24,8 +25,8 @@ const tailLayout = {
 };
 
 const signUpMutation = gql`
-  mutation SignUp($uuid: ID!, $email: String!, $password: String!) {
-    signUp(uuid: $uuid, email: $email, password: $password) {
+  mutation SignUp($uid: ID!, $email: String!, $password: String!) {
+    signUp(uid: $uid, email: $email, password: $password) {
       name
       email
     }
@@ -36,6 +37,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
   const [signUp] = useMutation(signUpMutation);
+  const history = useHistory();
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -43,11 +45,11 @@ const SignUp = () => {
     try {
       const result = await signUp({
         variables: {
-          uuid: generateUuid(),
+          uid: generateUuid(),
           ...values,
         },
       });
-      console.log('result', result);
+      history.push('/sign-in');
     } catch (err) {
       setServerError(err.message);
     }
@@ -87,6 +89,13 @@ const SignUp = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item {...tailLayout}>
+            <Button
+              type="link"
+              htmlType="button"
+              onClick={() => history.push('/sign-in')}
+            >
+              Sign In
+            </Button>
             <Button type="primary" htmlType="submit">
               Sign Up
             </Button>
