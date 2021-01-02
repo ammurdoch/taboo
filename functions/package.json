@@ -14,13 +14,16 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
     "apollo-server-express": "^2.19.1",
     "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "express": "^4.17.1",
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.1",
     "graphql": "^15.4.0",
-    "graphql-playground-middleware-express": "^1.7.22"
+    "graphql-playground-middleware-express": "^1.7.22",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@types/express": "4.17.9",
