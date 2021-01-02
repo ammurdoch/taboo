@@ -67,7 +67,7 @@ async function process_webhook(data: any) {   // TODO: Typing
   await sendEmail("pfista@gmail.com", subject, message)
 }
 
-async function processWebhook(req: Request, resp: Response) { // TODO: change?
+async function processWebhook(req: Request, resp: Response) {
     try {
         await verify_webhook(req)
         await process_webhook(req.body);
