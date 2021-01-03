@@ -9,19 +9,21 @@ const signUpResolver = async (_: any, data: any, { dataSources }: any) => {
   const { uid, email, password } = data;
 
   const db = admin.firestore();
-  let userDoc;
-  try {
-    userDoc = await db
-      .collection('users')
-      .doc(uid)
-      .get();
-  } catch (err) {
-    functions.logger.error(err);
-    throw new functions.https.HttpsError('internal', 'There was an error creating user account');
-  }
-  if (userDoc.exists) {
-    functions.logger.info(`User with id: ${uid} already exists`);
-    throw new functions.https.HttpsError('invalid-argument', 'Failed to create user');
+  {
+    let userDoc;
+    try {
+      userDoc = await db
+        .collection('users')
+        .doc(uid)
+        .get();
+    } catch (err) {
+      functions.logger.error(err);
+      throw new functions.https.HttpsError('internal', 'There was an error creating user account');
+    }
+    if (userDoc.exists) {
+      functions.logger.info(`User with id: ${uid} already exists`);
+      throw new functions.https.HttpsError('invalid-argument', 'Failed to create user');
+    }
   }
 
   const auth = admin.auth();
