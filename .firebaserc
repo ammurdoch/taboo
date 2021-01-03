@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "check-supply"
+    "default": "check-supply",
+    "dev": "check-supply-dev"
   }
 }
