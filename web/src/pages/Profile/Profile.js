@@ -32,8 +32,6 @@ function Profile() {
 
   const authContext = useContext(AuthContext);
 
-  console.log('auth', authContext.state);
-
   const locale = useSelector((store) => store.locale, shallowEqual);
 
   return (
@@ -50,14 +48,16 @@ function Profile() {
             <Text>{authContext.state.user.email}</Text>
           </Form.Item>
           <Form.Item label="Phone Number">
-            <Text>{authContext.state.user.phone}</Text>
+            <Text>{authContext.state.user.phoneNumber}</Text>
           </Form.Item>
           <Form.Item label="Birthday">
-            <Text>
-              {Intl.DateTimeFormat(locale).format(
-                new Date(authContext.state.user.birthday),
-              )}
-            </Text>
+            {authContext.state.user.birthday && (
+              <Text>
+                {Intl.DateTimeFormat(locale).format(
+                  new Date(authContext.state.user.birthday),
+                )}
+              </Text>
+            )}
           </Form.Item>
           <Form.Item {...tailLayout} style={{ margin: 0, textAlign: 'center' }}>
             <Button

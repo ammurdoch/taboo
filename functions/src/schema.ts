@@ -22,7 +22,7 @@ export default gql`
     uid: ID!
     name: String
     email: String
-    phone: String
+    phoneNumber: String
     birthday: Date
     profilePicUrl: String
     createdBy: ID!
@@ -35,7 +35,7 @@ export default gql`
     uid: ID!
     name: String
     email: String
-    phone: String
+    phoneNumber: String
     birthday: Date
     profilePicId: ID
   }

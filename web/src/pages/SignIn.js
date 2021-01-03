@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import firebase from 'firebase/app';
 import {
   Form,
@@ -11,6 +11,7 @@ import {
   Spin,
 } from 'antd';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../shared/auth-context';
 
 const { Title, Text } = Typography;
 
@@ -25,23 +26,19 @@ const tailLayout = {
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
+  const authContext = useContext(AuthContext);
   const history = useHistory();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     setLoading(true);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(values.email, values.password)
-      .then(function () {
-        history.push('/');
-      })
-      .catch(function (error) {
-        setServerError(error.message);
-        setLoading(false);
-      });
+    try {
+      await authContext.signIn(values);
+      history.push('/home');
+    } catch (err) {
+      setServerError(error.message);
+      setLoading(false);
+    }
   };
-
-  console.log('serverError', serverError);
 
   return (
     <div className="page qr-gen">

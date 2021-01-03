@@ -27,12 +27,12 @@ const updateProfileResolver = async (_: any, data: any, context: any) => {
   
   const db = admin.firestore();
 
-  const { uid, name, email, phone, ...docProps } = profile;
+  const { uid, name, email, phoneNumber, ...docProps } = profile;
   let userRecord;
   try {
     userRecord = await auth.updateUser(uid, {
       email,
-      phoneNumber: phone,
+      phoneNumber,
       displayName: name,
     });
     functions.logger.log('Successfully created new user:', userRecord.uid);

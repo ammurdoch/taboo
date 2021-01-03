@@ -3,6 +3,7 @@ import * as React from 'react';
 import { isEmptyChildren, isFunction } from './react-utils';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { authStateChangedAction, signOutAction } from '../redux-store';
+import { useHistory } from 'react-router-dom';
 
 const initialAuthState = {
   isLoading: true,
@@ -40,7 +41,7 @@ export const AuthContextProvider = (props) => {
         const userWithProfile = {
           uid: user.uid,
           email: user.email,
-          phone: user.phoneNumber,
+          phoneNumber: user.phoneNumber,
           ...profile,
         };
         dispatch(authStateChangedAction(userWithProfile));
