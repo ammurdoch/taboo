@@ -1,6 +1,11 @@
 import React from 'react';
 import { Layout, Space, Typography } from 'antd';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { firebaseApp } from './shared/firebase-functions';
 import SignIn from './pages/SignIn';
 import { AuthContextProvider } from './shared/auth-context';
@@ -60,7 +65,12 @@ const App = () => {
                   </Layout>
                 ) : (
                   <Switch>
-                    <Route exact path="/" component={SignUp} />
+                    <Route
+                      exact
+                      path="/"
+                      render={() => <Redirect to="/sign-up" />}
+                    />
+                    <Route exact path="/sign-up" component={SignUp} />
                     <Route exact path="/sign-in" component={SignIn} />
                   </Switch>
                 )}
