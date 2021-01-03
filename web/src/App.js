@@ -41,7 +41,7 @@ const App = () => {
                     <MainNavMenu />
                     <Layout style={{ background: 'white' }}>
                       <Switch>
-                        <Route exact path="/" component={Dashboard} />
+                        <Route exact path="/home" component={Dashboard} />
                         <Route exact path="/checks" component={Checks} />
                         <Route exact path="/payments" component={Payments} />
                         <Route exact path="/profile" component={Profile} />

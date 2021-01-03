@@ -24,7 +24,8 @@ import { AuthContext } from '../../shared/auth-context';
 import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 import moment from 'moment';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { readProfileAction, updateProfileAction } from '../../redux-store';
 
 const { Title, Text } = Typography;
 
@@ -34,7 +35,7 @@ export const updateProfileMutation = gql`
       uid
       name
       email
-      phone
+      phoneNumber
       birthday
       profilePicUrl
       createdBy
@@ -59,27 +60,29 @@ function EditProfile() {
   const history = useHistory();
   const authContext = useContext(AuthContext);
   const [updateProfile] = useMutation(updateProfileMutation);
+  const dispatch = useDispatch();
 
   const onFinish = async (values) => {
     setLoading(true);
     setError(null);
     try {
-      const { phone, ...otherValues } = values;
+      const { phoneNumber, ...otherValues } = values;
       let standardPhone;
-      if (!phone.startsWith('+') && phone.length === 10) {
-        standardPhone = `+1${phone}`;
+      if (!phoneNumber.startsWith('+') && phoneNumber.length === 10) {
+        standardPhone = `+1${phoneNumber}`;
       } else {
-        standardPhone = phone;
+        standardPhone = phoneNumber || null;
       }
       const result = await updateProfile({
         variables: {
           profile: {
             uid: authContext.state.user.uid,
-            phone: standardPhone,
+            phoneNumber: standardPhone,
             ...otherValues,
           },
         },
       });
+      dispatch(updateProfileAction(result.data.updateProfile));
       message.success('Profile successfully updated');
       history.push('/profile');
     } catch (err) {
@@ -128,8 +131,8 @@ function EditProfile() {
               </Form.Item>
               <Form.Item
                 label="Phone Number"
-                name="phone"
-                initialValue={user.phone}
+                name="phoneNumber"
+                initialValue={user.phoneNumber}
                 rules={[
                   {
                     pattern: /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,

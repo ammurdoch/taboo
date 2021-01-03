@@ -18,6 +18,7 @@ import {
   Timeline,
 } from 'antd';
 import Column from 'antd/lib/table/Column';
+import { Link, useHistory } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -32,6 +33,7 @@ function Dashboard() {
   const [error, setError] = useState(null);
   const [refetches, setRefetches] = useState(0);
   const _refetches = useRef(-1);
+  const history = useHistory();
 
   useEffect(() => {
     async function doAsyncStuff() {
@@ -77,12 +79,16 @@ function Dashboard() {
             style={{ marginBottom: 32 }}
           />
           <Timeline>
-            <Timeline.Item color="red">
-              <a onClick={() => console.log('verify')}>Verify your email</a>
+            <Timeline.Item color="red">Verify your email</Timeline.Item>
+            <Timeline.Item>
+              <Link to="/profile/edit">Complete your profile</Link>
             </Timeline.Item>
-            <Timeline.Item>Complete your profile</Timeline.Item>
-            <Timeline.Item>Connect a bank account</Timeline.Item>
-            <Timeline.Item>Send your first check</Timeline.Item>
+            <Timeline.Item>
+              <Link to="/banks">Connect a bank account</Link>
+            </Timeline.Item>
+            <Timeline.Item>
+              <Link to="/checks">Send your first check</Link>
+            </Timeline.Item>
           </Timeline>
         </Card>
       </div>

@@ -27,7 +27,7 @@ function MainNavMenu() {
   const history = useHistory();
   const currentItem = useMemo(() => {
     const path = location.pathname;
-    if (path === '/') {
+    if (path === '/home') {
       return 'home';
     } else if (path === '/checks') {
       return 'checks';
@@ -52,7 +52,7 @@ function MainNavMenu() {
           description: `Successfully signed out!`,
         });
       } else if (key === 'home') {
-        history.push('/');
+        history.push('/home');
       } else if (key === 'checks') {
         history.push('/checks');
       } else if (key === 'payments') {
