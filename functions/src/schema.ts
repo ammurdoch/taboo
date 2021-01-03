@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express');
 
 export default gql`
   type Query {
@@ -7,11 +7,7 @@ export default gql`
   }
 
   type Mutation {
-    signUp(
-      uid: ID!
-      email: String!
-      password: String!
-    ): UserNode
+    signUp(uid: ID!, email: String!, password: String!): UserNode
     updateProfile(profile: UpdateProfileInput): UserNode
   }
 

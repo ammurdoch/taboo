@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import * as  admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
 const authContext = async ({ req }: any) => {
   const token = req.headers.authorization;
@@ -26,14 +26,17 @@ const authContext = async ({ req }: any) => {
   if (!decodedToken) {
     return {};
   }
-  
+
   const { uid } = decodedToken;
   let user;
   try {
-    user = await admin.auth().getUser(uid)
+    user = await admin.auth().getUser(uid);
   } catch (err) {
     functions.logger.error(err);
-    throw new functions.https.HttpsError('internal', `Error fetching user: ${err.message}`);
+    throw new functions.https.HttpsError(
+      'internal',
+      `Error fetching user: ${err.message}`,
+    );
   }
   const db = admin.firestore();
   try {
@@ -46,10 +49,13 @@ const authContext = async ({ req }: any) => {
     }
   } catch (err) {
     functions.logger.error(err);
-    throw new functions.https.HttpsError('internal', `Error fetching profile: ${err.message}`);
+    throw new functions.https.HttpsError(
+      'internal',
+      `Error fetching profile: ${err.message}`,
+    );
   }
 
   return { user };
-}
+};
 
 export default authContext;

@@ -9,10 +9,11 @@ async function sendEmail(to: String, subject: String, message: String) {
     templateId: 'd-17df8fd3e18e4157b28f1e7f3355570e',
     dynamic_template_data: {
       subject: subject,
-      message: message
-  }};
+      message: message,
+    },
+  };
 
   return await sendgrid.send(msg);
 }
-  
+
 export default sendEmail;

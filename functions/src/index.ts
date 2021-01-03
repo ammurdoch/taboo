@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import * as  admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import configureServer from './server';
 import processWebhook from './lob-webhooks';
 
