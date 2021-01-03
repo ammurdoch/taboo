@@ -9,7 +9,7 @@ async function verify_webhook(req: Request) {
     const headers = req.headers;
     const lob_signature = headers["lob-signature"];
     const lob_timestamp: any = headers["lob-signature-timestamp"];
-    const secret = functions.config().lob.dev.webhook_secret; // TODO: Update for staging / prod
+    const secret = functions.config().lob.webhook_secret;
   
     let body = req.body;
     const pre_hash = lob_timestamp + "." + JSON.stringify(body);
