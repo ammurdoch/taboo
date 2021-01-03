@@ -71,7 +71,7 @@ function EditProfile() {
       if (!phoneNumber.startsWith('+') && phoneNumber.length === 10) {
         standardPhone = `+1${phoneNumber}`;
       } else {
-        standardPhone = phoneNumber;
+        standardPhone = phoneNumber || null;
       }
       const result = await updateProfile({
         variables: {
