@@ -2,6 +2,15 @@ import signUpResolver from './resolvers/auth/sign-up';
 import typeDefs from './schema';
 import authContext from './resolvers/auth/auth-context';
 import updateProfileResolver from './resolvers/auth/update-profile';
+import {
+  allBankAccountsResolver,
+  bankAccountResolver,
+} from './resolvers/bank-accounts/queries';
+import {
+  createBankAccountResolver,
+  deleteBankAccountResolver,
+  updateBankAccountResolver,
+} from './resolvers/bank-accounts/mutations';
 
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -15,10 +24,15 @@ const resolvers = {
       // Context variable looks like { user: ... }
       return 'world';
     },
+    allBankAccounts: allBankAccountsResolver,
+    bankAccount: bankAccountResolver,
   },
   Mutation: {
     signUp: signUpResolver,
     updateProfile: updateProfileResolver,
+    createBankAccount: createBankAccountResolver,
+    updateBankAccount: updateBankAccountResolver,
+    deleteBankAccount: deleteBankAccountResolver,
   },
 };
 
