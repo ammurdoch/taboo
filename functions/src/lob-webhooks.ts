@@ -8,22 +8,22 @@ const CryptoJS = require('crypto-js');
 
 async function verify_webhook(req: Request) {
   const headers = req.headers;
-  const lob_signature = headers['lob-signature'];
-  const lob_timestamp: any = headers['lob-signature-timestamp'];
+  const lobSignature = headers['lob-signature'];
+  const lobTimestamp: any = headers['lob-signature-timestamp'];
   const secret = functions.config().lob.webhook_secret;
 
   const body = req.body;
-  const pre_hash = lob_timestamp + '.' + JSON.stringify(body);
-  const hash = CryptoJS.HmacSHA256(pre_hash, secret);
+  const preHash = lobTimestamp + '.' + JSON.stringify(body);
+  const hash = CryptoJS.HmacSHA256(preHash, secret);
 
   const timestamp = Date.now();
-  const latency = timestamp - parseInt(lob_timestamp);
-  const is_equal = hash.toString() === lob_signature;
+  const latency = timestamp - parseInt(lobTimestamp);
+  const isEqual = hash.toString() === lobSignature;
 
-  if (!is_equal || latency >= 300000) {
+  if (!isEqual || latency >= 300000) {
     functions.logger.error('Hash:', hash.toString());
-    functions.logger.error('lob_sig:', lob_signature);
-    functions.logger.error('is_equal:', is_equal);
+    functions.logger.error('lobSignature:', lobSignature);
+    functions.logger.error('isEqual:', isEqual);
     functions.logger.error('latency:', latency);
     throw new functions.https.HttpsError(
       'unauthenticated',
