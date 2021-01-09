@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, gql, useApolloClient } from '@apollo/client';
-import { readBankAccountsAction } from '../../redux-store/bank-accounts-store';
+import { readBankAccountsAction } from '../../../redux-store/bank-accounts-store';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import apolloClient from '../../apollo-client';
+import apolloClient from '../../../apollo-client';
 
 export const allBankAccountsQuery = gql`
   query AllBankAccounts($filters: BankAccountFilters) {
@@ -66,9 +66,9 @@ export function useBanksAccounts(filters) {
 
   const bankAccounts = useSelector(
     (store) =>
-      Object.values(store.bankAccounts).sort((a, b) =>
-        a.localeCompare(b.label),
-      ),
+      Object.values(store.bankAccounts)
+        .filter((b) => b)
+        .sort((a, b) => a.label.localeCompare(b.label)),
     shallowEqual,
   );
 

@@ -20,7 +20,8 @@ import MainNavMenu from './components/MainNavMenu';
 import Version from './components/Version';
 import Profile from './pages/Profile';
 import EditProfile from './pages/Profile/EditProfile';
-import BanksAccounts from './pages/BankAccounts';
+import ListBanksAccounts from './pages/bank-accounts/ListBankAccounts';
+import EditBankAccount from './pages/bank-accounts/EditBankAccount';
 
 const { Text } = Typography;
 
@@ -51,7 +52,16 @@ const App = () => {
                           path="/profile/edit"
                           component={EditProfile}
                         />
-                        <Route exact path="/banks" component={BanksAccounts} />
+                        <Route
+                          exact
+                          path="/bank-accounts"
+                          component={ListBanksAccounts}
+                        />
+                        <Route
+                          exact
+                          path="/bank-account/edit/:_id"
+                          component={EditBankAccount}
+                        />
                       </Switch>
                       <Layout.Footer
                         style={{

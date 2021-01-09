@@ -19,6 +19,7 @@ import {
 } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { Link, useHistory } from 'react-router-dom';
+import { generateUuid } from '../shared/utils';
 
 const { Title, Text } = Typography;
 
@@ -84,7 +85,9 @@ function Dashboard() {
               <Link to="/profile/edit">Complete your profile</Link>
             </Timeline.Item>
             <Timeline.Item>
-              <Link to="/banks">Connect a bank account</Link>
+              <Link to={`/bank-account/edit/${generateUuid()}`}>
+                Connect a bank account
+              </Link>
             </Timeline.Item>
             <Timeline.Item>
               <Link to="/checks">Send your first check</Link>

@@ -26,7 +26,7 @@ export const updateBankAccountAction = (bankAccount) => ({
 });
 
 export const deleteBankAccountAction = (bankAccountId) => ({
-  type: UPDATE_BANK_ACCOUNT,
+  type: DELETE_BANK_ACCOUNT,
   payload: {
     bankAccountId,
   },
@@ -35,11 +35,12 @@ export const deleteBankAccountAction = (bankAccountId) => ({
 const initialBankAccounts = [];
 
 export function bankAccounts(state = initialBankAccounts, action) {
+  console.log('action', action);
   switch (action.type) {
     case READ_BANK_ACCOUNTS: {
       const newState = { ...state };
       action.payload.bankAccounts.forEach((p) => {
-        newState[p._id] = p;
+        newState[p.id] = p;
       });
       return newState;
     }

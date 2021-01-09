@@ -3,19 +3,21 @@ import { Button, Space, Table, Typography, Tooltip } from 'antd';
 import Column from 'antd/lib/table/Column';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import settings from '../../settings';
-import { generateUuid } from '../../shared/utils';
+import settings from '../../../settings';
+import { generateUuid } from '../../../shared/utils';
 import { useBanksAccounts } from './use-banks-accounts';
 import { shallowEqual, useSelector } from 'react-redux';
+import DeleteBankAccountModal from '../DeleteBankAccountModal';
 
 const { Title, Text } = Typography;
 
-function BanksAccounts() {
+function ListBanksAccounts() {
   const history = useHistory();
   const [pagination, setPagination] = useState({
     current: 1,
     bankAccountSize: settings.bankAccountSize,
   });
+  const [deleting, setDeleting] = useState(null);
 
   const { loading, error, refetch, bankAccounts } = useBanksAccounts({});
 
@@ -27,7 +29,7 @@ function BanksAccounts() {
 
   const handleCreate = useCallback(() => {
     const bankAccountId = generateUuid();
-    history.push(`bankAccount/${bankAccountId}`);
+    history.push(`bank-account/edit/${bankAccountId}`);
   }, [history]);
 
   const locale = useSelector((store) => store.locale, shallowEqual);
@@ -74,20 +76,26 @@ function BanksAccounts() {
               </Tooltip> */}
               <Tooltip title="Edit">
                 <Button
-                  onClick={() => history.push(`/bankAccount/${record.id}`)}
+                  onClick={() =>
+                    history.push(`/bank-account/edit/${record.id}`)
+                  }
                   icon={<EditOutlined />}
                 />
               </Tooltip>
-              {/* <Tooltip title="Delete">
+              <Tooltip title="Delete">
                 <Button
-                  onClick={() => setDeleting(record.serialNo)}
+                  onClick={() => setDeleting(record)}
                   icon={<DeleteOutlined />}
                 />
-              </Tooltip> */}
+              </Tooltip>
             </Space>
           )}
         />
       </Table>
+      <DeleteBankAccountModal
+        setBankAccount={setDeleting}
+        bankAccount={deleting}
+      />
       {error && (
         <div className="ant-form-item-has-error" style={{ marginTop: 16 }}>
           <div className="ant-form-item-explain">{error}</div>
@@ -136,4 +144,4 @@ function BanksAccounts() {
   );
 }
 
-export default BanksAccounts;
+export default ListBanksAccounts;
