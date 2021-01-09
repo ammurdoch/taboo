@@ -1,9 +1,9 @@
 export function itemToCursor(item: string | number): string {
-  return btoa(`cursor:${item}`);
+  return Buffer.from(`cursor:${item}`).toString('base64');
 }
 
 export function cursorToItem(cursor: string): string {
-  return atob(cursor).split(':')[1];
+  return Buffer.from(cursor, 'base64').toString().split(':')[1];
 }
 
 export function getPageParams(
@@ -18,18 +18,23 @@ export function getPageParams(
 
 export function convertSnapshotToCollection(
   snapshot: any,
-  startAfter: string,
+  startAfter: string | null,
   limit: number,
 ) {
-  const edges = snapshot.docs.map((doc: any) => ({
-    cursor: itemToCursor(doc.id),
-    node: doc,
-  }));
+  const edges: any = [];
+  snapshot.forEach((doc: any) => {
+    edges.push({
+      cursor: itemToCursor(doc.id),
+      node: doc.data(),
+    });
+  });
   const pageInfo = {
     hasPreviousPage: startAfter !== null,
     hasNextPage: snapshot.size < limit,
-    startCursor: itemToCursor(snapshot.docs[0].id),
-    endCursor: itemToCursor(snapshot.docs[snapshot.size - 1].id),
+    startCursor: edges.length ? itemToCursor(edges[0].node.id) : null,
+    endCursor: edges.length
+      ? itemToCursor(edges[edges.length - 1].node.id)
+      : null,
   };
   return {
     edges: edges,

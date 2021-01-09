@@ -25,9 +25,10 @@ export const createBankAccountResolver = async (
   // TODO: Do something with the routing and account numbers
 
   const db = admin.firestore();
-  const { id, label } = bankAccount;
+  const { id, label, owner } = bankAccount;
   const bankAccountObj = {
     id,
+    owner,
     label,
     verificationStatus: 'not-verified',
     createdBy: context.user.uid,
@@ -120,7 +121,7 @@ export const deleteBankAccountResolver = async (
 ) => {
   functions.logger.info(data, { structuredData: true });
 
-  const { bankAccountId } = data;
+  const { id } = data;
 
   if (!context.user) {
     functions.logger.info(`allBanksResolver: Unauthenticated user`);
@@ -130,10 +131,7 @@ export const deleteBankAccountResolver = async (
   const db = admin.firestore();
   let bankAccountDoc;
   try {
-    bankAccountDoc = await db
-      .collection('bankAccounts')
-      .doc(bankAccountId)
-      .get();
+    bankAccountDoc = await db.collection('bankAccounts').doc(id).get();
   } catch (err) {
     functions.logger.error(err);
     throw new functions.https.HttpsError(
@@ -143,7 +141,7 @@ export const deleteBankAccountResolver = async (
   }
 
   if (!bankAccountDoc.exists) {
-    functions.logger.error(`Bank account ${bankAccountId} doesn't exist`);
+    functions.logger.error(`Bank account ${id} doesn't exist`);
     throw new functions.https.HttpsError(
       'internal',
       'There was an error updating bank account',
@@ -160,7 +158,7 @@ export const deleteBankAccountResolver = async (
   }
 
   try {
-    await db.collection('bankAccounts').doc(bankAccountId).delete();
+    await db.collection('bankAccounts').doc(id).delete();
   } catch (err) {
     functions.logger.error(err);
     throw new functions.https.HttpsError(
@@ -169,5 +167,5 @@ export const deleteBankAccountResolver = async (
     );
   }
 
-  return bankAccountId;
+  return id;
 };

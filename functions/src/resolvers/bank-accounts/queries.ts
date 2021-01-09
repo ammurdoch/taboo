@@ -8,9 +8,15 @@ export const allBankAccountsResolver = async (
   context: any,
 ) => {
   functions.logger.info(data, { structuredData: true });
-
+  let startAfter;
+  let limit;
   const { first, after } = data;
-  const { startAfter, limit } = getPageParams(first, after);
+  if (first && after) {
+    ({ startAfter, limit } = getPageParams(first, after));
+  } else {
+    startAfter = null;
+    limit = 100;
+  }
 
   if (!context.user) {
     functions.logger.info(`allBanksResolver: Unauthenticated user`);
@@ -24,15 +30,16 @@ export const allBankAccountsResolver = async (
     if (startAfter) {
       snapshot = await db
         .collection('bankAccounts')
+        .where('owner', '==', context.user.uid)
         .orderBy('id')
         .startAfter(startAfter);
     } else {
-      snapshot = await db.collection('bankAccounts').orderBy('id');
+      snapshot = await db
+        .collection('bankAccounts')
+        .where('owner', '==', context.user.uid)
+        .orderBy('id');
     }
-    snapshot = snapshot
-      .where('owner', '==', context.user.uid)
-      .limit(limit)
-      .get();
+    snapshot = await snapshot.limit(limit).get();
     return convertSnapshotToCollection(snapshot, startAfter, limit);
   } catch (err) {
     functions.logger.error(err);

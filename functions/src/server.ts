@@ -11,6 +11,7 @@ import {
   deleteBankAccountResolver,
   updateBankAccountResolver,
 } from './resolvers/bank-accounts/mutations';
+import * as functions from 'firebase-functions';
 
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -22,6 +23,7 @@ const resolvers = {
   Query: {
     hello: (_: any, data: any, context: any) => {
       // Context variable looks like { user: ... }
+      functions.logger.info(`Hello`);
       return 'world';
     },
     allBankAccounts: allBankAccountsResolver,

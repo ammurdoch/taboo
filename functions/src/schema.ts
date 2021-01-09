@@ -10,6 +10,7 @@ export default gql`
       after: String
       filters: BankAccountFilters
     ): BankAccountConnection!
+    bankAccount(id: ID!): BankAccountNode
   }
 
   type Mutation {
