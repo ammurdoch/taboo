@@ -33,6 +33,7 @@ const authMiddleware = new ApolloLink(async (operation, forward) => {
   let idToken;
   if (currentUser) {
     idToken = await currentUser.getIdToken(true);
+    console.log('idToken', idToken);
   }
   if (idToken) {
     operation.setContext({

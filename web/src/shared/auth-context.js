@@ -2,7 +2,10 @@ import firebase from 'firebase/app';
 import * as React from 'react';
 import { isEmptyChildren, isFunction } from './react-utils';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { authStateChangedAction, signOutAction } from '../redux-store';
+import {
+  authStateChangedAction,
+  signOutAction,
+} from '../redux-store/auth-store';
 import { useHistory } from 'react-router-dom';
 
 const initialAuthState = {
@@ -44,6 +47,7 @@ export const AuthContextProvider = (props) => {
           phoneNumber: user.phoneNumber,
           ...profile,
         };
+        console.log('user', userWithProfile);
         dispatch(authStateChangedAction(userWithProfile));
       } else {
         dispatch(authStateChangedAction(null));
