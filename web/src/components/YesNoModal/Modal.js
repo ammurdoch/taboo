@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Form, Input, Button, Checkbox, Typography, Card, Tooltip } from 'antd';
+import { Typography, Card, Tooltip, Space, Spin } from 'antd';
 import {
   DownloadOutlined,
   MailOutlined,
@@ -18,6 +18,8 @@ const YesNoModal = ({
   onYes,
   onNo,
   visible,
+  loading = false,
+  error = null,
   closable = true,
   destroyOnClose = true,
   maskClosable = true,
@@ -34,10 +36,25 @@ const YesNoModal = ({
         onCancel={onNo}
         okText={yesText}
         onOk={onYes}
+        confirmLoading={loading}
       >
-        <div style={{ textAlign: 'center' }}>
-          <Text>{question}</Text>
-        </div>
+        <Spin spinning={loading}>
+          <Space
+            direction="vertical"
+            align="center"
+            style={{ textAlign: 'center' }}
+          >
+            <Text>{question}</Text>
+            {error && (
+              <div
+                className="server-error ant-form-item-has-error"
+                style={{ marginTop: 16 }}
+              >
+                <div className="ant-form-item-explain">{error}</div>
+              </div>
+            )}
+          </Space>
+        </Spin>
       </Modal>
       <style jsx>{``}</style>
       <style jsx global>{``}</style>

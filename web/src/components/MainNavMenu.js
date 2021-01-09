@@ -36,7 +36,7 @@ function MainNavMenu() {
     } else if (path === '/profile') {
       return 'profile';
     } else if (path === '/bank-accounts') {
-      return 'banks';
+      return 'bank-accounts';
     } else if (path === '/addresses') {
       return 'addresses';
     }
@@ -59,8 +59,8 @@ function MainNavMenu() {
         history.push('/payments');
       } else if (key === 'profile') {
         history.push('/profile');
-      } else if (key === 'banks') {
-        history.push('/banks');
+      } else if (key === 'bank-accounts') {
+        history.push('/bank-accounts');
       } else if (key === 'addresses') {
         history.push('/addresses');
       }
@@ -115,7 +115,7 @@ function MainNavMenu() {
           <Menu.Item key="profile" icon={<ProfileOutlined />}>
             Profile
           </Menu.Item>
-          <Menu.Item key="banks" icon={<BankOutlined />}>
+          <Menu.Item key="bank-accounts" icon={<BankOutlined />}>
             Bank Accounts
           </Menu.Item>
           <Menu.Item key="addresses" icon={<EnvironmentOutlined />}>

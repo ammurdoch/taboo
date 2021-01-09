@@ -25,7 +25,7 @@ import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 import moment from 'moment';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { readProfileAction, updateProfileAction } from '../../redux-store';
+import { updateProfileAction } from '../../redux-store/auth-store';
 
 const { Title, Text } = Typography;
 
