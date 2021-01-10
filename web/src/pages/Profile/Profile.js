@@ -8,6 +8,7 @@ import { AuthContext } from '../../shared/auth-context';
 import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 import { useSelector, shallowEqual } from 'react-redux';
+import useProfile from './use-profile';
 
 const { Title, Text } = Typography;
 
@@ -31,6 +32,7 @@ function Profile() {
   const history = useHistory();
 
   const authContext = useContext(AuthContext);
+  const profile = useProfile();
 
   const locale = useSelector((store) => store.locale, shallowEqual);
 
@@ -39,23 +41,21 @@ function Profile() {
       <div className="header">
         <Title style={{ margin: 0 }}>Profile</Title>
       </div>
-      <Card cover={<ProfilePic />}>
+      <Card cover={<ProfilePic profile={profile} />}>
         <Form {...layout} style={{ width: 600 }}>
           <Form.Item label="Name">
-            <Text>{authContext.state.user.name}</Text>
+            <Text>{profile.name}</Text>
           </Form.Item>
           <Form.Item label="Email">
-            <Text>{authContext.state.user.email}</Text>
+            <Text>{profile.email}</Text>
           </Form.Item>
           <Form.Item label="Phone Number">
-            <Text>{authContext.state.user.phoneNumber}</Text>
+            <Text>{profile.phoneNumber}</Text>
           </Form.Item>
           <Form.Item label="Birthday">
-            {authContext.state.user.birthday && (
+            {profile.birthday && (
               <Text>
-                {Intl.DateTimeFormat(locale).format(
-                  new Date(authContext.state.user.birthday),
-                )}
+                {Intl.DateTimeFormat(locale).format(new Date(profile.birthday))}
               </Text>
             )}
           </Form.Item>
