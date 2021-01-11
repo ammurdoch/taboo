@@ -4,6 +4,7 @@ export default gql`
   type Query {
     "A simple type for getting started!"
     hello: String
+    profile: UserNode!
     bank(id: ID!): BankAccountNode
     allBankAccounts(
       first: Int
@@ -19,6 +20,7 @@ export default gql`
     createBankAccount(bankAccount: BankAccountCreateInput!): BankAccountNode!
     updateBankAccount(bankAccount: BankAccountUpdateInput!): BankAccountNode!
     deleteBankAccount(id: ID!): ID!
+    createImage(image: ImageCreate!): ImageNode!
   }
 
   scalar Date
@@ -38,7 +40,7 @@ export default gql`
     email: String
     phoneNumber: String
     birthday: Date
-    profilePicUrl: String
+    profilePic: ImageNode
     createdBy: ID!
     updatedBy: ID!
     createdAt: DateTime
@@ -55,7 +57,13 @@ export default gql`
   }
 
   type ImageFile {
-    id: ID!
+    s3Key: String!
+    size: Float!
+    filename: String!
+    contentType: String!
+  }
+
+  input ImageFileCreate {
     s3Key: String!
     size: Float!
     filename: String!
@@ -76,6 +84,15 @@ export default gql`
     updatedBy: ID!
     createdAt: DateTime
     updatedAt: DateTime
+  }
+
+  input ImageCreate {
+    id: ID!
+    filename: String!
+    desc: String
+    original: ImageFileCreate!
+    tags: [String]
+    permissions: [String]
   }
 
   type BankAccountNode {

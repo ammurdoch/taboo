@@ -25,26 +25,10 @@ import { useHistory } from 'react-router-dom';
 import ProfilePic from './ProfilePic';
 import moment from 'moment';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { updateProfileAction } from '../../redux-store/auth-store';
+import useUpdateProfile from './use-update-profile';
+import useProfile from './use-profile';
 
 const { Title, Text } = Typography;
-
-export const updateProfileMutation = gql`
-  mutation UpdateProfile($profile: UpdateProfileInput!) {
-    updateProfile(profile: $profile) {
-      uid
-      name
-      email
-      phoneNumber
-      birthday
-      profilePicUrl
-      createdBy
-      updatedBy
-      createdAt
-      updatedAt
-    }
-  }
-`;
 
 const layout = {
   labelCol: { span: 10 },
@@ -58,9 +42,8 @@ function EditProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const history = useHistory();
-  const authContext = useContext(AuthContext);
-  const [updateProfile] = useMutation(updateProfileMutation);
-  const dispatch = useDispatch();
+  const profile = useProfile();
+  const updateProfile = useUpdateProfile(profile.uid);
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -68,21 +51,19 @@ function EditProfile() {
     try {
       const { phoneNumber, ...otherValues } = values;
       let standardPhone;
-      if (!phoneNumber.startsWith('+') && phoneNumber.length === 10) {
+      if (
+        phoneNumber &&
+        !phoneNumber.startsWith('+') &&
+        phoneNumber.length === 10
+      ) {
         standardPhone = `+1${phoneNumber}`;
       } else {
         standardPhone = phoneNumber || null;
       }
-      const result = await updateProfile({
-        variables: {
-          profile: {
-            uid: authContext.state.user.uid,
-            phoneNumber: standardPhone,
-            ...otherValues,
-          },
-        },
+      await updateProfile({
+        phoneNumber: standardPhone,
+        ...otherValues,
       });
-      dispatch(updateProfileAction(result.data.updateProfile));
       message.success('Profile successfully updated');
       history.push('/profile');
     } catch (err) {
@@ -93,23 +74,19 @@ function EditProfile() {
 
   const locale = useSelector((store) => store.locale, shallowEqual);
 
-  const user = useMemo(() => {
-    return authContext.state.user;
-  }, [authContext.state.user]);
-
   return (
     <div className="page">
       <div className="header">
         <Title style={{ margin: 0 }}>Profile</Title>
       </div>
-      {authContext.state.user && (
+      {profile && (
         <Spin spinning={loading}>
-          <Card cover={<ProfilePic />}>
+          <Card cover={<ProfilePic profile={profile} />}>
             <Form {...layout} style={{ width: 600 }} onFinish={onFinish}>
               <Form.Item
                 label="Name"
                 name="name"
-                initialValue={user.name}
+                initialValue={profile.name}
                 rules={[{ required: true, message: 'Please enter your name' }]}
               >
                 <Input />
@@ -117,7 +94,7 @@ function EditProfile() {
               <Form.Item
                 name="email"
                 label="Email"
-                initialValue={user.email}
+                initialValue={profile.email}
                 rules={[
                   { required: true, message: 'Please enter your email' },
                   {
@@ -132,7 +109,7 @@ function EditProfile() {
               <Form.Item
                 label="Phone Number"
                 name="phoneNumber"
-                initialValue={user.phoneNumber}
+                initialValue={profile.phoneNumber}
                 rules={[
                   {
                     pattern: /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
@@ -146,7 +123,7 @@ function EditProfile() {
               <Form.Item
                 label="Birthday"
                 name="birthday"
-                initialValue={user.birthday && moment(user.birthday)}
+                initialValue={profile.birthday && moment(profile.birthday)}
               >
                 <DatePicker
                   style={{ width: '100%' }}
