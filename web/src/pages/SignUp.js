@@ -27,7 +27,7 @@ const tailLayout = {
 const signUpMutation = gql`
   mutation SignUp($uid: ID!, $email: String!, $password: String!) {
     signUp(uid: $uid, email: $email, password: $password) {
-      name
+      displayName
       email
     }
   }

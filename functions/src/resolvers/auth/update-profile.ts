@@ -33,17 +33,13 @@ const updateProfileResolver = async (_: any, data: any, context: any) => {
 
   const db = admin.firestore();
 
-  const { uid, name, email, phoneNumber, ...docProps } = profile;
+  const { uid, displayName, email, phoneNumber, ...docProps } = profile;
   let userRecord;
   const update: any = {};
   try {
-    for (const [propName, updateName] of [
-      ['name', 'displayName'],
-      ['email', 'email'],
-      ['phoneNumber', 'phoneNumber'],
-    ]) {
+    for (const propName of ['displayName', 'email', 'phoneNumber']) {
       if (profile[propName]) {
-        update[updateName] = profile[propName];
+        update[propName] = profile[propName];
       }
     }
     userRecord = await auth.updateUser(uid, {

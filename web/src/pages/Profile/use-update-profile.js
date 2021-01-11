@@ -6,7 +6,7 @@ export const updateProfileMutation = gql`
   mutation UpdateProfile($profile: UpdateProfileInput!) {
     updateProfile(profile: $profile) {
       uid
-      name
+      displayName
       email
       phoneNumber
       birthday

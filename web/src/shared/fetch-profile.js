@@ -5,7 +5,7 @@ const profileQuery = gql`
   query Profile {
     profile {
       uid
-      name
+      displayName
       email
       phoneNumber
       birthday

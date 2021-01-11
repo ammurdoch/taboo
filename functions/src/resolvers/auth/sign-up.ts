@@ -46,7 +46,7 @@ const signUpResolver = async (_: any, data: any, { dataSources }: any) => {
 
   try {
     const userDoc = {
-      name: '',
+      displayName: '',
       createdBy: uid,
       createdAt: new Date().toISOString(),
       updatedBy: uid,

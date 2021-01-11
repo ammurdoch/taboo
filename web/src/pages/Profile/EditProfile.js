@@ -85,8 +85,8 @@ function EditProfile() {
             <Form {...layout} style={{ width: 600 }} onFinish={onFinish}>
               <Form.Item
                 label="Name"
-                name="name"
-                initialValue={profile.name}
+                name="displayName"
+                initialValue={profile.displayName}
                 rules={[{ required: true, message: 'Please enter your name' }]}
               >
                 <Input />
