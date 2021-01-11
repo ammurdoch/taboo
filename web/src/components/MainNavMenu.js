@@ -49,7 +49,7 @@ function MainNavMenu() {
     ({ item, key, keyPath, domEvent }) => {
       if (key === 'sign-out') {
         authContext.signOut();
-        history.push('/');
+        history.push('/sign-in');
         notification.open({
           message: 'Success',
           description: `Successfully signed out!`,
@@ -80,7 +80,7 @@ function MainNavMenu() {
         setCollapsed(collapsed || broken);
       }}
       onCollapse={(_collapsed) => {
-        setCollapsed(collapsed === undefined ? true : _collapsed);
+        setCollapsed(collapsed === undefined ? false : _collapsed);
       }}
       theme="light"
       width={300}

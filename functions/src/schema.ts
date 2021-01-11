@@ -36,7 +36,7 @@ export default gql`
 
   type UserNode {
     uid: ID!
-    name: String
+    displayName: String
     email: String
     phoneNumber: String
     birthday: Date
@@ -49,7 +49,7 @@ export default gql`
 
   input UpdateProfileInput {
     uid: ID!
-    name: String
+    displayName: String
     email: String
     phoneNumber: String
     birthday: Date

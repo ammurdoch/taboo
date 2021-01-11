@@ -34,7 +34,7 @@ export const authStateChangedAction = (profile) => async (dispatch) => {
     },
   });
 
-  if (profile.profilePic && profile.profilePic.sm) {
+  if (profile && profile.profilePic && profile.profilePic.sm) {
     const storageRef = firebase.storage().ref();
     try {
       const profilePicUrl = await storageRef

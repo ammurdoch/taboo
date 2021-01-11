@@ -44,7 +44,7 @@ function Profile() {
       <Card cover={<ProfilePic profile={profile} />}>
         <Form {...layout} style={{ width: 600 }}>
           <Form.Item label="Name">
-            <Text>{profile.name}</Text>
+            <Text>{profile.displayName}</Text>
           </Form.Item>
           <Form.Item label="Email">
             <Text>{profile.email}</Text>
