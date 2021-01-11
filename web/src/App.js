@@ -22,6 +22,8 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/Profile/EditProfile';
 import ListBanksAccounts from './pages/bank-accounts/ListBankAccounts';
 import EditBankAccount from './pages/bank-accounts/EditBankAccount';
+import Account from './pages/Account';
+import Addresses from './pages/Addresses';
 
 const { Text } = Typography;
 
@@ -45,6 +47,8 @@ const App = () => {
                       <Switch>
                         <Route exact path="/home" component={Dashboard} />
                         <Route exact path="/checks" component={Checks} />
+                        <Route exact path="/addresses" component={Addresses} />
+                        <Route exact path="/account" component={Account} />
                         <Route exact path="/payments" component={Payments} />
                         <Route exact path="/profile" component={Profile} />
                         <Route

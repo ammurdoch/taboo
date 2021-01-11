@@ -7,6 +7,7 @@ import {
   EnvironmentOutlined,
   FileOutlined,
   HomeOutlined,
+  LockOutlined,
   LogoutOutlined,
   ProfileOutlined,
   SettingOutlined,
@@ -39,6 +40,8 @@ function MainNavMenu() {
       return 'bank-accounts';
     } else if (path === '/addresses') {
       return 'addresses';
+    } else if (path === '/account') {
+      return 'account';
     }
     return 'home';
   }, [location]);
@@ -63,6 +66,8 @@ function MainNavMenu() {
         history.push('/bank-accounts');
       } else if (key === 'addresses') {
         history.push('/addresses');
+      } else if (key === 'account') {
+        history.push('/account');
       }
     },
     [authContext, history],
@@ -112,6 +117,9 @@ function MainNavMenu() {
           Payments
         </Menu.Item>
         <SubMenu key="settings" icon={<SettingOutlined />} title="Settings">
+          <Menu.Item key="account" icon={<LockOutlined />}>
+            Account
+          </Menu.Item>
           <Menu.Item key="profile" icon={<ProfileOutlined />}>
             Profile
           </Menu.Item>
