@@ -44,7 +44,7 @@ const authContext = async ({ req }: any) => {
     if (userDoc.exists) {
       user = {
         ...user,
-        profile: userDoc.data(),
+        ...userDoc.data(),
       };
     }
   } catch (err) {

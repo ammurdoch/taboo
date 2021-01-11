@@ -35,13 +35,21 @@ const updateProfileResolver = async (_: any, data: any, context: any) => {
 
   const { uid, name, email, phoneNumber, ...docProps } = profile;
   let userRecord;
+  const update: any = {};
   try {
+    for (const [propName, updateName] of [
+      ['name', 'displayName'],
+      ['email', 'email'],
+      ['phoneNumber', 'phoneNumber'],
+    ]) {
+      if (profile[propName]) {
+        update[updateName] = profile[propName];
+      }
+    }
     userRecord = await auth.updateUser(uid, {
-      email,
-      phoneNumber,
-      displayName: name,
+      ...update,
     });
-    functions.logger.log('Successfully created new user:', userRecord.uid);
+    functions.logger.log('Successfully updated user:', userRecord.uid);
   } catch (err) {
     functions.logger.error(err);
     throw new functions.https.HttpsError('internal', `Error: ${err.message}`);
@@ -52,7 +60,7 @@ const updateProfileResolver = async (_: any, data: any, context: any) => {
       .collection('users')
       .doc(uid)
       .update({
-        name,
+        ...update,
         ...docProps,
         updatedAt: new Date().toISOString(),
         updatedBy: context.user.uid,
@@ -68,7 +76,7 @@ const updateProfileResolver = async (_: any, data: any, context: any) => {
     functions.logger.error(err);
     throw new functions.https.HttpsError(
       'internal',
-      'There was an error creating user account',
+      'There was an error updating user account',
     );
   }
 };

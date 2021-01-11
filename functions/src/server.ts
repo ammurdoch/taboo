@@ -12,6 +12,9 @@ import {
   updateBankAccountResolver,
 } from './resolvers/bank-accounts/mutations';
 import * as functions from 'firebase-functions';
+import { createImageResolver } from './resolvers/images/mutations';
+import { profilePicResolver } from './resolvers/images/queries';
+import { profileResolver } from './resolvers/auth/queries';
 
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -26,8 +29,12 @@ const resolvers = {
       functions.logger.info(`Hello`);
       return 'world';
     },
+    profile: profileResolver,
     allBankAccounts: allBankAccountsResolver,
     bankAccount: bankAccountResolver,
+  },
+  UserNode: {
+    profilePic: profilePicResolver,
   },
   Mutation: {
     signUp: signUpResolver,
@@ -35,6 +42,7 @@ const resolvers = {
     createBankAccount: createBankAccountResolver,
     updateBankAccount: updateBankAccountResolver,
     deleteBankAccount: deleteBankAccountResolver,
+    createImage: createImageResolver,
   },
 };
 

@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export const READ_PROFILE = 'READ_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const SIGN_OUT = 'SIGN_OUT';
@@ -24,12 +26,31 @@ export const signOutAction = () => ({
 });
 
 // eslint-disable-next-line no-shadow
-export const authStateChangedAction = (profile) => ({
-  type: AUTH_STATE_CHANGE,
-  payload: {
-    profile,
-  },
-});
+export const authStateChangedAction = (profile) => async (dispatch) => {
+  dispatch({
+    type: AUTH_STATE_CHANGE,
+    payload: {
+      profile,
+    },
+  });
+
+  if (profile.profilePic && profile.profilePic.sm) {
+    const storageRef = firebase.storage().ref();
+    try {
+      const profilePicUrl = await storageRef
+        .child(profile.profilePic.sm.s3Key)
+        .getDownloadURL();
+      dispatch({
+        type: AUTH_STATE_CHANGE,
+        payload: {
+          profile: { ...profile, profilePicUrl },
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 
 const initialAuthState = {
   isLoading: true,
