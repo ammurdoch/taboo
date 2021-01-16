@@ -1,3 +1,4 @@
+import './shared/firebase-functions';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.less';

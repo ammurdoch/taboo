@@ -1,7 +1,5 @@
 {
   "projects": {
-    "default": "check-supply",
-    "dev": "check-supply-dev",
-    "prod": "check-supply"
+    "default": "taboo-21d5d"
   }
 }

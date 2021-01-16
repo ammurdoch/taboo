@@ -1,12 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import enUS from 'antd/es/locale/en_US';
 import { authState, profile, SIGN_OUT } from './auth-store';
-import { bankAccounts } from './bank-accounts-store';
 import thunk from 'redux-thunk';
 
 const appReducer = combineReducers({
   authState,
-  bankAccounts,
   profile,
   locale: () => enUS,
 });

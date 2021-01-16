@@ -23,76 +23,17 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const SignIn = () => {
+const Home = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(null);
   const authContext = useContext(AuthContext);
   const history = useHistory();
 
-  const onFinish = async (values) => {
-    setLoading(true);
-    try {
-      await authContext.signIn(values);
-      history.push('/home');
-    } catch (err) {
-      setServerError(error.message);
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="page qr-gen">
       <Title className="qr-gen-title">Taboo</Title>
       <Spin spinning={loading}>
-        <Form
-          {...layout}
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          className="signin-form"
-        >
-          <Title level={3}>Sign In</Title>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: 'Please enter your email' },
-              {
-                type: 'email',
-                message: 'Please enter a valid email (ex. aaron@gmail.com).',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: 'Please enter your password' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button
-              type="link"
-              htmlType="button"
-              onClick={() => history.push('/sign-up')}
-            >
-              Sign Up
-            </Button>
-            <Button type="primary" htmlType="submit">
-              Sign In
-            </Button>
-          </Form.Item>
-          {serverError && (
-            <div
-              className="server-error ant-form-item-has-error"
-              style={{ marginTop: 16 }}
-            >
-              <div className="ant-form-item-explain">{serverError}</div>
-            </div>
-          )}
-        </Form>
+        <Text>Build your game here</Text>
       </Spin>
       <style jsx>{`
         .page {
@@ -137,4 +78,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Home;

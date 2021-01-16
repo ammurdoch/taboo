@@ -6,8 +6,6 @@ import {
   authStateChangedAction,
   signOutAction,
 } from '../redux-store/auth-store';
-import { useHistory } from 'react-router-dom';
-import fetchProfile from './fetch-profile';
 
 const initialAuthState = {
   isLoading: true,
@@ -39,9 +37,7 @@ export const AuthContextProvider = (props) => {
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const profile = await fetchProfile();
-        console.log('user', profile);
-        dispatch(authStateChangedAction(profile));
+        dispatch(authStateChangedAction({}));
       } else {
         dispatch(authStateChangedAction(null));
       }

@@ -1,13 +1,4 @@
-# My Check Supply
-
-**Main website:**: https://check.supply
-
-**App website:** https://my.check.supply
-
-# Overview
-
-![System Architecture](./system-architecture.png)
-
+# Taboo
 
 # Project Structure
 
@@ -22,12 +13,6 @@
 - `web`: frontend web app
 
 # Tech Stack
-## Backend
-- Firebase
-- nodejs
-- typescript
-- Apollo Server
-
 ## Frontend
 - ReactJS
 - Ant Design
@@ -36,15 +21,7 @@
 
 # Steps to deploy
 
-1. Build and deploy functions
-```
-cd functions
-yarn install
-yarn build
-firebase deploy --only functions
-```
-
-2. Build and deploy frontend
+1. Build and deploy frontend
 ```
 cd web
 yarn install
@@ -52,39 +29,10 @@ yarn build
 firebase deploy --only hosting
 ```
 
-3. Access GraphQL playground
-
-Navigate to https://us-central1-check-supply.cloudfunctions.net/api/playground
-
 # Running locally
-1. Backend:
-```
-cd functions
-yarn install
-yarn build
-firebase emulators:start --only functions
-```
-
-2. Frontend
+1. Frontend
 ```
 cd web
 yarn install
 yarn start
-```
-
-3. Access GraphQL playground
-
-Navigate to http://localhost:5001/check-supply/us-central1/api/playground
-
-# Troubleshooting
-
-If you run the emulators and get a "This port is already used" error:
-```
-yarn global add kill-port
-kill-port <port-to-kill>
-```
-
-# Notes:
-```
-export FIREBASE_AUTH_EMULATOR_HOST="localhost:9099"
 ```

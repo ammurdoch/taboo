@@ -58,7 +58,7 @@ const SignUp = () => {
 
   return (
     <div className="page qr-gen">
-      <Title className="qr-gen-title">Check Supply</Title>
+      <Title className="qr-gen-title">Taboo</Title>
       <Spin spinning={loading}>
         <Form
           {...layout}

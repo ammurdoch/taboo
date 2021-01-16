@@ -5,13 +5,13 @@ import 'firebase/functions';
 import 'firebase/storage';
 
 export const firebaseApp = firebase.initializeApp({
-  apiKey: 'AIzaSyDx69_J-1pT0yLaG_UmykU8yZ1WSqvYmpc',
-  authDomain: 'check-supply.firebaseapp.com',
-  projectId: 'check-supply',
-  storageBucket: 'check-supply.appspot.com',
-  messagingSenderId: '740012492538',
-  appId: '1:740012492538:web:8fe8277ea17f7a8a70ab43',
-  measurementId: 'G-1VYKLBYGFK',
+  apiKey: 'AIzaSyARuH6cqgXZFf9AzYmlx12WGOAMfG2Lelg',
+  authDomain: 'taboo-21d5d.firebaseapp.com',
+  projectId: 'taboo-21d5d',
+  storageBucket: 'taboo-21d5d.appspot.com',
+  messagingSenderId: '923028723412',
+  appId: '1:923028723412:web:46f0bb613b4e29ff4b8d41',
+  measurementId: 'G-V6DZLCPYZD',
 });
 
 if (process.env.NODE_ENV === 'development') {
